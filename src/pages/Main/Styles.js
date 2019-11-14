@@ -1,4 +1,6 @@
+// @ts-nocheck
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 export const Container = styled.div`
     display: flex;
@@ -20,11 +22,14 @@ export const Form = styled.form`
         background: #fff;
         border: 0;
         font-size: 18px;
-        color: #444;
         border-radius: 3px;
+
+        border: ${(props) => (props.withError ? "2px solid #f00" : 0)};
+        color: ${(props) => (props.withError ? "#f00" : "#444")};
     }
 
     button {
+        width: 80px;
         height: 55px;
         padding: 0 20px;
         margin-left: 10px;
@@ -35,6 +40,11 @@ export const Form = styled.form`
         font-weight: bold;
         border-radius: 3px;
         cursor: pointer;
+
+        :focus {
+            background: #52d89f;
+            color: #fff;
+        }
 
         &:hover {
             background: #52d89f;
