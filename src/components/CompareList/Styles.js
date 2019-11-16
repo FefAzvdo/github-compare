@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
     justify-content: center;
 
@@ -45,6 +46,9 @@ export const Repository = styled.div`
     li {
         font-weight: bold;
         padding: 12px 20px;
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid black;
 
         small {
             font-weight: normal;
@@ -53,8 +57,13 @@ export const Repository = styled.div`
             font-style: italic;
         }
 
-        &:nth-child(2n - 1) {
-            background: #f5f5f5;
+        /* &:nth-child(2n - 1) {
+            background: #ccc;
+        } */
+
+        img {
+            width: 20px;
+            height: 20px
         }
     }
 
