@@ -61,9 +61,6 @@ export default class Main extends React.Component {
     }
 
     handleUpdateRepository = async (full_name, index) => {
-        console.log('full_name: ', full_name)
-        console.log('id: ', index)
-
         const { data: repository } = await api.get(`/repos/${full_name}`);
 
         repository.lastCommit = moment(repository.pushed_at).fromNow();
