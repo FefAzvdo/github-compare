@@ -1,12 +1,13 @@
 // @ts-nocheck
 import styled from "styled-components";
-import PropTypes from "prop-types";
 
 export const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-top: 60px;
+
+    
 `;
 
 export const Form = styled.form`
@@ -26,7 +27,13 @@ export const Form = styled.form`
 
         border: ${(props) => (props.withError ? "2px solid #f00" : 0)};
         color: ${(props) => (props.withError ? "#f00" : "#444")};
+
+        &::placeholder{
+            color: ${(props) => (props.withError ? "#f00" : "#444")};
+        }
     }
+
+    
 
     button {
         width: 80px;

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 
 import moment from "moment";
 
@@ -18,6 +18,10 @@ export default class Main extends React.Component {
         loading: false
     };
 
+    saveToStorage = () => {
+        localStorage.setItem("repositories", JSON.stringify(this.state.repositories))
+    }
+
     handleAddRepository = async (e) => {
         e.preventDefault();
 
@@ -35,6 +39,10 @@ export default class Main extends React.Component {
                 repositories: [...this.state.repositories, repository],
                 repositoryError: false
             });
+
+            this.saveToStorage()
+
+
         } catch (err) {
             this.setState({
                 repositoryError: true
@@ -45,6 +53,38 @@ export default class Main extends React.Component {
             });
         }
     };
+
+    handleDeleteRepository = (index) => {
+        this.setState({
+            repositories: this.state.repositories.filter((el) => el.id !== index)
+        }, () => this.saveToStorage())
+    }
+
+    handleUpdateRepository = async (full_name, index) => {
+        console.log('full_name: ', full_name)
+        console.log('id: ', index)
+
+        const { data: repository } = await api.get(`/repos/${full_name}`);
+
+        repository.lastCommit = moment(repository.pushed_at).fromNow();
+
+        var arr = this.state.repositories;
+
+        arr[index] = repository
+
+        this.setState({
+            repositoryInput: "",
+            repositories: arr,
+            repositoryError: false
+        });
+
+    }
+
+    componentDidMount() {
+        this.setState({
+            repositories: JSON.parse(localStorage.getItem("repositories")) || []
+        })
+    }
 
     render() {
         return (
@@ -57,13 +97,18 @@ export default class Main extends React.Component {
                         placeholder="usuário/repositório"
                         value={this.state.repositoryInput}
                         onChange={(e) => this.setState({ repositoryInput: e.target.value })}
+
                     />
                     <button type="submit">
                         {this.state.loading ? <i className="fa fa-spinner fa-pulse" /> : "OK"}
                     </button>
                 </Form>
 
-                <CompareList repositories={this.state.repositories} />
+                <CompareList
+                    repositories={this.state.repositories}
+                    deleteFunc={(id) => () => this.handleDeleteRepository(id)}
+                    updateFunc={(full_name, id) => () => this.handleUpdateRepository(full_name, id)}
+                />
             </Container>
         );
     }
